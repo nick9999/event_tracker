@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 var request = require("request")
+var constants = require("./constants")
 // var GoogleMapsLoader = require('google-maps')
 // GoogleMapsLoader.KEY = 'AIzaSyAudxHKQN-xuIX9B7a39ILzoLCmiEJrE7U'
 // GoogleMapsLoader.LIBRARIES = ['geometry', 'places']
@@ -55,7 +56,7 @@ app.post('/remainder', (req, res) => {
 	var remainderTime = parseInt(req.body.time, 10)
 	eventTime -= (remainderTime * 60)
 	console.log(eventTime)
-	sendMail(email, eventName, eventDetails, eventTime)
+	// sendMail(email, eventName, eventDetails, eventTime)
 	res.write("You will get mail before event")
 	res.end()
 })
@@ -76,6 +77,7 @@ app.get('/maps', (req, res) => {
 
 var server = http.listen(3000, () => {
 	console.log("server is running on 3000");
+	console.log("Sendgrid key: ", constants.sendgridKey)
 })
 
 
@@ -88,7 +90,7 @@ function sendMail(email, eventName, eventDetails, eventTime) {
 
 			'cache-control': 'no-cache',
 			'Content-Type': 'application/json',
-			Authorization: 'Bearer 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'
+			Authorization: constants.sendgridKey
 		},
 		body:
 		{
